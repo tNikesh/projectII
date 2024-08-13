@@ -2,57 +2,54 @@
 
 namespace App\Livewire;
 
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Cart extends Component
 {
-    public $item;
-    public $id;
+    public $userId;
     public $show = true;
 
-    public function mount($item)
+
+    protected $listeners = ['addedCart' => 'updateCartStatus'];
+
+    public function mount()
     {
-        $this->item = $item;
-        $this->id = $item['pid'];
+     $this->userId=Auth::id();      
     }
-    public function increment()
+    public function updateCartStatus(){
+        // dd('hello');
+        $this->render();
+    }
+    public function increment($cartId,$increment)
     {
-
-        $cart = session()->get('cart');
-
-        if (isset($cart[$this->id]) && ($cart[$this->id]['qty'] < 100)) {
-            $cart[$this->id]['qty']++;
-            session()->put('cart', $cart);
-
-            // Update Livewire component state
-            $this->item['qty'] = $cart[$this->id]['qty'];
+        
+        $cart = \App\Models\Cart::findOrFail($cartId);
+        if($increment){
+            if($cart->quantity<100){
+                $cart->quantity+=1;
+            }
         }
-    }
-    public function decrement()
-    {
-        $cart = session()->get('cart');
-
-        if (isset($cart[$this->id]) && $cart[$this->id]['qty'] > 1) {
-            $cart[$this->id]['qty']--;
-            session()->put('cart', $cart);
-
-            // Update Livewire component state
-            $this->item['qty'] = $cart[$this->id]['qty'];
+        else{
+            if($cart->quantity>1){
+                $cart->quantity-=1;
+            }
         }
+        $cart->save();
+
     }
+
     // removing the item from cart
-    public function removeItem($id)
+    public function removeItem($cartId)
     {
-        $cart = session()->get('cart');
-        if (isset($cart[$id])) {
-            unset($cart[$id]);
-            session()->put('cart', $cart);
-            $this->show=false;
-        }
+        $cart = \App\Models\Cart::findOrFail($cartId);
+        $cart->delete();
+       $this->dispatch('removedCart');
           
     }
     public function render()
     {
-        return view('livewire.cart');
+        $cartItems=\App\models\cart::with('product')->where('user_id',$this->userId)->get();
+        return view('livewire.cart',compact('cartItems'));
     }
 }

@@ -1,7 +1,5 @@
 @props(['class'=>''])
-@php
-    $cart=session()->get('cart',[]);
-@endphp
+
 <div  id="cart" {{ $attributes->merge(['class'=>"fixed w-full max-w-[425px] h-[100vh]  top-0 right-0 translate-x-full transform transition-transform duration-500 ease-in-out bg-[#FAF7FC] border border-gray-200 drop-shadow-2xl z-50 overflow-y-scroll $class"]) }}>
 <div  class="w-full  p-8 flex justify-between items-center">
     <h1 class="text-3xl uppercase font-bold">Cart</h1>
@@ -9,11 +7,7 @@
 
 </div>
 <div class="container flex flex-col items-center justify-center  divide-y divide-gray-300 border-y border-gray-300">
-    @foreach ($cart as $key => $item )
-    @if (is_array($item))
-        <livewire:cart :item="$item" :key="$key"/>
-   @endif
-   @endforeach
+        <livewire:cart />
 </div>
     <a href="{{ route('checkout') }}" class="block text-xl mt-12 font-semibold bg-gray-800 text-white w-10/12  mx-auto text-center py-5 capitalize tracking-widest" >checkout</a>
 </div>

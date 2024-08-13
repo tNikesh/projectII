@@ -15,11 +15,16 @@ class AddCategoryController extends Controller
            'desc'=>'nullable|string|max:255',
         ]);
 
-        $category= new ProductCategory();
+        try{
+            $category= new ProductCategory();
         $category->title=$req->input('title');
         $category->desc=$req->input('desc');
         $category->save();
-         return redirect()->route('product.category');
+         return redirect()->route('product.category')->with('success','New product category created !');
+        }
+        catch(\Exception $e){
+            return redirect()->back()->with('error','Failed to create product category !');
+        }
     }
 
     // viewing of product cateogry page
@@ -35,10 +40,10 @@ class AddCategoryController extends Controller
             $id=$req->input('deleteId');
             $category=ProductCategory::findOrFail($id);
             $category->delete();
-            return redirect()->back()->with(['success'=>'Product category deleted']);
+            return redirect()->back()->with('success','Product category deleted');
         }
         catch(ModelNotFoundException $e){
-            return redirect()->back()->with(['error'=>'category not found']);
+            return redirect()->back()->with('error','category not found');
         }
     }
 }

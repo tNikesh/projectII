@@ -25,7 +25,6 @@
                     <td class="py-3 px-2">Name</td>
                     <td class="py-3 px-2">Description</td>
                     <td class="py-3 px-2">Product Category</td>
-                    <td class="py-3 px-2">Sub Category</td>
                     <td class="py-3 px-2">Action</td>
                   </tr>
                 </thead>
@@ -36,8 +35,7 @@
                     <td class="py-3 px-2 w-32">{{$product->id}}</td>
                     <td class="py-3 px-2 w-32">{{$product->name}}</td>
                     <td class="py-3 px-2 w-32">{{$product->desc}}</td>
-                    <td class="py-3 px-2 w-32">{{$product->productCategory ? $product->productCategory->title:'N\A'}}</td>
-                    <td class="py-3 px-2 w-32">{{$product->subCategory ? $product->subCategory->title:'N\A'}}</td>
+                    <td class="py-3 px-2 w-32">{{$product->productCategory->title}}</td>
                     <td class="py-3 px-2 w-32">
                       <form action="{{ route('destroy.product') }}" method="POST">
                         @csrf

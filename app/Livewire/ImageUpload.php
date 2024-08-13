@@ -15,7 +15,7 @@ class ImageUpload extends Component
     public $previews=[];
 
     protected $rules=[
-       'images.*'=>'image|mimes:jpeg,png,jpg,gif,webp,svg|max:1024',
+       'images.*'=>'required|image|mimes:jpeg,png,jpg,gif,webp,svg|max:1024',
     ];
     protected $messages = [
         'images.*.image' => 'Each file must be an image.',
@@ -29,7 +29,7 @@ class ImageUpload extends Component
         if(count($this->images)>4){
             $this->reset('images');
             $this->reset('previews');
-            session()->flash('error', 'You can only upload a maximum of 4 images.');
+             $this->dispatch('notification',['error'=>'You can only upload a maximum of 4 images.']);
             return;
         }
 

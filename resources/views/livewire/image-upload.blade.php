@@ -13,9 +13,6 @@
           <span class="text-red-500 text-sm">{{ $message }}</span>
         @enderror
       <!-- Flash message for image count error -->
-      @if (session()->has('error'))
-          <span class="text-red-500">{{ session('error') }}</span>
-      @endif
     </div>  
     <div wire:loading wire:target="images" class="text-center text-gray-500">
         Loading...

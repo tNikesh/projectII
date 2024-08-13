@@ -14,12 +14,11 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('desc');
+            $table->text('desc')->nullable();
             $table->decimal('base_price', 10, 2);
             $table->integer('stock');
             $table->decimal('discount', 5, 2)->nullable();
             $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('sub_category_id')->nullable();
             $table->string('image_1', 255)->nullable(); // File name of the first image
             $table->string('image_2', 255)->nullable(); // File name of the second image
             $table->string('image_3', 255)->nullable(); // File name of the third image
@@ -28,7 +27,6 @@ return new class extends Migration
 
             // Foreign key constraints
             $table->foreign('category_id')->references('id')->on('product_categories')->onDelete('cascade');
-            $table->foreign('sub_category_id')->references('id')->on('sub_categories')->onDelete('cascade');
         });
     }
 

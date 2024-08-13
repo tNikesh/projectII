@@ -1,31 +1,4 @@
-@php
-$carts=session()->get('cart',[]);
 
-$totalQty=0;
-$subtotal=0;
-$delivery=150;
-$total=0;
-
-$totalQty=array_sum(array_column($carts,'qty'));
-
-// Calculate the total price with validation
-$subtotal = array_sum(array_map(function($item) {
-// Ensure the discount and quantity keys exist and are numeric
-$price = isset($item['price']) ? $item['price'] : 0;
-$discount = isset($item['discount']) ? $item['discount'] : 0;
-$qty = isset($item['qty']) ? $item['qty'] : 0;
-
-// Calculate the effective price after discount
-$effectivePrice = $price - ($price * $discount / 100);
-
-// Multiply by quantity and return
-return $effectivePrice * $qty;
-}, $carts));
-
-$total=$subtotal+$delivery;
-
-
-@endphp
 <!doctype html>
 <html>
 
@@ -76,9 +49,9 @@ $total=$subtotal+$delivery;
     class="w-full flex flex-col justify-start items-center m-0 p-0 md:border-t md:border-gray-400  md:px-5 md:gap-x-4 bg-primary md:flex-row-reverse md:items-start ">
     <section class="w-full md:w-[45%] md:px-10">
       <div class="bg-secondary w-full flex justify-between items-center p-4 z-20 md:bg-primary">
-        <h1 class="text-base font-gray-800">order summary ({{ $totalQty }} items)</h1>
+        <h1 class="text-base font-gray-800">order summary</h1>
         <div id="showButton" class="flex justify-end items-center gap-x-1 cursor-pointer ">
-          <span>Rs.{{ $subtotal }}</span>
+          <span>Rs.{{ $subTotal }}</span>
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000">
             <path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z" />
           </svg>
@@ -88,30 +61,32 @@ $total=$subtotal+$delivery;
       <div class="relative w-full overflow-y-hidden ">
         <div id="show-summary"
           class="absolute top-0 left-0 -translate-y-full md:relative md:translate-y-0 md:bg-primary transform transition-all duration-300 ease-in-out w-full flex flex-col justify-center items-start gap-y-6 py-10 px-2 z-10 bg-white">
-          @foreach ($carts as $cart => $item)
-          @if(is_array($item))
+         
+          @foreach ($carts as $cart)
+
           <div class="flex justify-evenly items-center w-full md:justify-between">
             <div class="flex justify-center items-center gap-x-4">
               <div class="relative w-20">
-                <img src="{{ asset('images/'.$item['image']) }}"
-                  class="w-full h-auto aspect-auto rounded-sm drop-shadow-xl" alt="">
+                <img src="{{ asset('images/'.$cart->product->image_1) }}"
+                  class="w-full h-auto aspect-auto rounded-sm drop-shadow-xl" alt="{{ $cart->product->name }}">
                 <span
                   class="absolute top-0 translate-x-3 -translate-y-3 right-0 size-8 flex justify-center items-center bg-gray-400 text-lg text-white rounded-full">{{
-                  $item['qty'] }}</span>
+                  $cart->quantity }}</span>
               </div>
-              <span class="uppercase font-normal text-base tracking-wider">{{ $item['name'] }}</span>
+              <span class="uppercase font-normal text-base tracking-wider">{{ $cart->product->name }}</span>
             </div>
             <span class="tracking-wider font-normal text-base">
-              Rs. {{ $item['price']-($item['price']*$item['discount']/100) }}
+              Rs. {{ $cart->product->base_price-($cart->product->base_price*$cart->product->discount/100) }}
             </span>
           </div>
-          @endif
+
           @endforeach
+
           <div
             class="w-full flex flex-col justify-center items-start gap-y-4 border-y border-gray-300 py-4 text-gray-600">
             <div class="w-full flex justify-between items-start">
               <span>sub total</span>
-              <span>Rs. {{ $subtotal }}</span>
+              <span>Rs. {{ $subTotal }}</span>
             </div>
             <div class="w-full flex justify-between items-start">
               <span>delivery</span>
@@ -119,8 +94,8 @@ $total=$subtotal+$delivery;
             </div>
           </div>
           <div class="w-full justify-between flex items-center text-gray-700">
-            <span class="font-medium text-lg uppercase">total</span>
-            <span class="font-semibold text-3xl tracking-wide">Rs. {{ $total }}</span>
+            <span class="font-medium text-lg uppercase">grand total</span>
+            <span class="font-semibold text-3xl tracking-wide">Rs. {{ $subTotal+$delivery }}</span>
           </div>
         </div>
       </div>
@@ -128,50 +103,63 @@ $total=$subtotal+$delivery;
 
     <section class="full py-10 md:w-1/2  md:border-r md:border-gray-400 ">
       <h1 class="uppercase w-full text-center font-semibold text-4xl text-gray-900">Billing Details</h1>
-      <form action="" method="" class="w-full flex justify-center items-center gap-y-3 flex-col p-4 ">
+      <form action="{{ route('checkout.store') }}" method="post" class="w-full flex justify-center items-center gap-y-3 flex-col p-4 ">
+        @csrf
         <div class="w-full ">
           <x-forms.label for="email" content="Email" />
           <x-forms.input name="email" type="email" autofocus />
+          @error('email')
+          <span class="text-red-500 text-sm">{{ $message }}</span>
+      @enderror
         </div>
-        <div class="w-full flex justify-between items-center md:flex-row flex-col gap-3">
+        <div class="w-full ">
+          <x-forms.label for="number" content="number" />
+          <x-forms.input name="number" type="number" autofocus />
+          @error('number')
+          <span class="text-red-500 text-sm">{{ $message }}</span>
+      @enderror
+        </div>
+        <div class="w-full flex justify-between items-start md:flex-row flex-col gap-3">
           <div class="w-full">
             <x-forms.label for="fname" content="First Name" />
-            <x-forms.input name="fname" type="text" />
+            <x-forms.input name="fname" type="text" required/>
+            @error('fname')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+        @enderror
           </div>
           <div class="w-full">
             <x-forms.label for="lname" content="Last Name" />
             <x-forms.input name="lname" type="text" />
+            @error('lname')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+        @enderror
           </div>
         </div>
-        <div class="w-full flex justify-between items-center md:flex-row flex-col gap-4 py-2">
-          <div class="w-full flex justify-start items-center gap-3 ">
-            <x-forms.label for="state" content="state" />
-            <select name="state" class="w-full  text-center h-10 text-lg capitalize bg-primary">
-              <option value="1">state 1</option>
-              <option value="1">state 1</option>
-              <option value="1">state 1</option>
-            </select>
-          </div>
-          <div class="w-full flex justify-start items-center gap-x-2">
-            <x-forms.label for="district" content="district" />
-            <select name="district" class="w-full  text-center h-10 text-lg capitalize bg-primary">
-              <option value="1">district 1</option>
-              <option value="1">district 1</option>
-              <option value="1">district 1</option>
-            </select>
-          </div>
+        <div class="w-full">
+          <livewire:LocationSelector/>
         </div>
         <div class="w-full flex justify-between items-center flex-wrap">
-          <x-forms.label for="address" content="address" />
-          <x-forms.input name="address" type="text" />
+          <x-forms.label for="city" content="city" />
+          <x-forms.input name="city" type="text" />
+          @error('city')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+        @enderror
         </div>
+        <div class="w-full flex justify-between items-center flex-wrap">
+          <x-forms.label for="street" content="street" />
+          <x-forms.input name="street" type="text" />
+          @error('street')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+        @enderror
+        </div>
+       
         <div class=" flex flex-col w-full items-center justify-center gap-y-1">
           <h2 class="w-full capitalize text-lg">select payment method</h2>
           <div class="flex flex-col w-full items-center justify-center gap-y-5">
             <div
               class="w-full border-2 border-gray-300 p-2 flex items-center space-x-2 cursor-pointer transition duration-300 hover:border-blue-600 focus-within:border-blue-600">
               <label class="w-full inline-flex items-center">
-                <input type="radio" name="payment" class="custom-radio" value="pay" checked />
+                <input type="radio" name="payment" class="custom-radio" value="paid" checked />
                 <span class="ml-2 text-gray-700 capitalize">Pay now</span>
               </label>
             </div>
@@ -179,10 +167,14 @@ $total=$subtotal+$delivery;
               class="w-full border-2 border-gray-300 p-2 flex items-center space-x-2 cursor-pointer transition duration-300 hover:border-blue-600 focus-within:border-blue-600">
 
               <label class="w-full inline-flex items-center">
-                <input type="radio" name="payment" class="custom-radio" value="cod" />
+                <input type="radio" name="payment" class="custom-radio" value="unpaid" />
                 <span class="ml-2 text-gray-700 capitalize">cash on delivery</span>
               </label>
             </div>
+            
+            @error('payment')
+            <span class=" w-full text-red-500 text-sm">{{ $message }}</span>
+        @enderror
           </div>
 
         </div>

@@ -16,7 +16,7 @@ class ProductCategory extends Model
     // If you want to explicitly define timestamps behaviour
     public $timestamps = true;
     
-    public function products()
+    public function product()
     {
         return $this->hasMany(Product::class);
     }

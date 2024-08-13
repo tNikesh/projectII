@@ -32,11 +32,17 @@
                             <x-forms.label for="name" content="Product Name" />
                             <x-forms.input name="name" placeholder="Enter Product Name" class="bg-zinc-200 text-base "
                                 autofocus />
+                                @error('name')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="w-full">
                             <x-forms.label for="desc" content="Product Description" />
                             <x-forms.text-area name="desc" placeholder="Enter Product Description" cols="7" rows="4"
                                 class="bg-zinc-200 text-base" />
+                                @error('desc')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                     {{-- image section --}}
@@ -51,15 +57,24 @@
                             <x-forms.label for="base_price" content="Base Pricing" />
                             <x-forms.input name="base_price" placeholder="Enter Base Price" class="bg-zinc-200 text-base "
                                 autofocus />
+                                @error('base_price')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="w-full flex justify-center items-center gap-x-6">
                             <div class="w-full">
                                 <x-forms.label for="stock" content="stock" />
                                 <x-forms.input name="stock" placeholder="22" class="bg-zinc-200 text-base " />
+                                @error('stock')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
                             </div>
                             <div class="w-full">
                                 <x-forms.label for="discount" content="Dicount%" />
                                 <x-forms.input name="discount" placeholder="10%" class="bg-zinc-200 text-base " />
+                                @error('discount')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
                             </div>
                         </div>
                     </div>
@@ -70,11 +85,9 @@
                         <div class="w-full flex flex-col justify-center items-center gap-y-1 ">
                             <x-forms.label for="category" content="Product Category" />
                             <x-forms.select name="category" placeholder="select product category" :options="$productCategories"/>
-                        </div>
-                    
-                        <div class="w-full flex flex-col justify-center items-center  gap-y-1">
-                            <x-forms.label for="subCategory" content="Sub Category" class="text-left" />
-                            <x-forms.select name="subCategory" placeholder="select sub category" :options=" $subCategories"/>
+                            @error('category')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
                         </div>
                     
                     </div>

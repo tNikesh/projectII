@@ -9,9 +9,9 @@ class IndexController extends Controller
 {
     public function index(){
 
-        $bestSeller=Product::with('subCategory')
-            ->whereHas('subCategory',function($query){
-                $query->whereRaw('LOWER(title)=?',['best seller']);
+        $bestSeller=Product::with('productCategory')
+            ->whereHas('productCategory',function($query){
+                $query->whereRaw('LOWER(title)=?',['soap']);
             })->get();
         return view('index',compact('bestSeller'));
     }
