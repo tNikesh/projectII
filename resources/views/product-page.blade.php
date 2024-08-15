@@ -29,8 +29,8 @@
             <livewire:add-to-cart :productId="$product->id" wire:key="single-product-{{ $product->id }}" />
         </form>
     </div>
-    <div class="w-full px-10 ">
-        <div class=>
+    <div class="w-full px-10 flex flex-col items-end justify-center py-5">
+        <div class="">
             <span class="text-green font-medium text-lg capitalize cursor-pointer">write your review. Good or Bad
                 ?</span>
             <form action="{{ route('review', $product->id) }}" method="POST"
@@ -53,9 +53,9 @@
                 <div class="flex justify-start flex-col items-start bg-white p-4 rounded shadow-md mb-4">
                     <div class="flex justify-between items-center">
                         <div class="flex flex-col items-start justify-start"> <span
-                                class="capitalize font-medium whitespace-nowrap">{{ $r->customer_name }}</span>
+                                class="capitalize font-medium whitespace-nowrap">{{ $r->user->name }}</span>
                             <span
-                                class="capitalize text-gray-500 whitespace-nowrap">{{ $r->created_at->format('d:m:y') }}</span>
+                                class="capitalize text-gray-500 whitespace-nowrap">{{ $r->created_at->format('M d,y') }}</span>
                         </div>
                         <div class="flex justify-center items-center gap-x-0">
                             @for ($i = 1; $i <= 5; $i++)

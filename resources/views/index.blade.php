@@ -11,14 +11,14 @@
 
     {{-- best seller section --}}
     <section class="  py-14 px-5 flex flex-col gap-y-7 justify-evenly items-center w-full z-10 bg-primary">
-        <h1 class="uppercase tracking-wider text-[23px] font-medium ">best seller</h1>
+        <h1 class="uppercase tracking-wider text-[23px] font-medium ">Recommended Product</h1>
         
         {{-- products outer conatiner --}}
         <div
             class="flex items-center justify-center w-full md:justify-evenly gap-x-5 md:gap-x-20 gap-y-10 md:gap-y-14 flex-wrap md:px-14">
           
             {{-- each itsm --}}
-            @foreach ($bestSeller as $best)
+            @foreach ($recommendedProducts as $best)
                 <div class="flex items-center justify-start flex-col gap-y-1 w-2/5 md:w-2/12">
                     <div class=" relative w-full flex items-center ">
                         <span

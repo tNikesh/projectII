@@ -61,7 +61,7 @@ class CheckoutController extends Controller
                     'email' => $req->email,
                     'number' => $req->number,
                     'province' => $req->province,
-                    'distict' => $req->district,
+                    'district' => $req->district,
                     'city' => $req->city,
                     'street' => $req->street,
                     'payment_status' => 'unpaid',

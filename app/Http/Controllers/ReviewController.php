@@ -23,7 +23,7 @@ class ReviewController extends Controller
                 'product_id' => $product->id,
                 'ratings' => $req->input('rating'),
                 'reviews' => $req->input('review'),
-                'customer_name' => Auth::user()->name,
+                'user_id' => Auth::id(),
             ]);
             return back()->with('success', 'Review submitted successfully!');
         } catch (\Exception $e) {

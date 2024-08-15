@@ -86,7 +86,7 @@ class ProductController extends Controller
 
     // single product page
     public function showSingleProduct( $id){
-        $product=Product::with(['productCategory','review'])->findOrFail($id);
+        $product=Product::with(['productCategory','review.user:id,name'])->findOrFail($id);
         try{
             $images=[];
             if($product->image_1){
