@@ -29,7 +29,7 @@ class ImageUpload extends Component
         if(count($this->images)>4){
             $this->reset('images');
             $this->reset('previews');
-             $this->dispatch('notification',['error'=>'You can only upload a maximum of 4 images.']);
+             $this->dispatch('notification',['type' => 'error', 'message' =>'You can only upload a maximum of 4 images.']);
             return;
         }
 

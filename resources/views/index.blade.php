@@ -4,10 +4,10 @@
     <x-hero-section />
 
     {{-- slider --}}
-    <x-slider class="px-5" />
+    {{-- <x-slider class="px-5" /> --}}
 
     {{-- product-video-slider --}}
-    <x-product-video class="px-5 " />
+    {{-- <x-product-video class="px-5 " /> --}}
 
     {{-- best seller section --}}
     <section class="  py-14 px-5 flex flex-col gap-y-7 justify-evenly items-center w-full z-10 bg-primary">
@@ -45,7 +45,7 @@
         <x-forms.button content="view all products" type="button" class="max-w-72 w-full p-2 text-lg font-medium" />
     </section>
 
-    <section class=" flex items-center text-white py-32 bg-transparent ">
+    {{-- <section class=" flex items-center text-white py-32 bg-transparent ">
         <div style="background-image: url('{{ asset('images/productBg.jpg') }}');"
             class="opacity-95 bg-cover bg-no-repeat fixed h-screen w-svw bottom-0 left-0 z-0"></div>
         <div class=" w-full max-w-[700px] m-auto flex justify-center items-center flex-col gap-y-1 px-3 ">
@@ -57,9 +57,9 @@
             <x-forms.button content="shop now" type="button"
                 class="bg-primary text-gray-950 ring-2 ring-gray-950 hover:ring-primary hover:bg-black hover:text-primary transition-all z-10 w-36 text-lg" />
         </div>
-    </section>
+    </section> --}}
 
-    <section
+    {{-- <section
         class="w-full flex flex-col justify-center py-20 items-center gap-y-7 border-b border-gray-400 bg-primary px-5  z-10">
         <h1 class=" uppercase tracking-wider text-[23px] font-medium ">most viewed</h1>
         <div
@@ -73,9 +73,9 @@
                 </div>
             @endfor
         </div>
-    </section>
+    </section> --}}
 
-    <section class="w-full flex flex-col justify-center items-center gap-y-10 py-10 bg-primary z-10">
+    {{-- <section class="w-full flex flex-col justify-center items-center gap-y-10 py-10 bg-primary z-10">
         <x-forms.button content="follow us!" type="button" class="w-40 py-2 text-lg" />
         <h1 class="text-xl text-black font-semibold mx-2 text-center">DON'T JUST TAKE OUR WORD FOR IT...</h1>
         <div
@@ -89,5 +89,5 @@
                 using shampoo powder and my hair fall has reduced along with increase in volume. Remarkable!</p>
             <span class="text-lg text-gray-800 font-semibold">Disha O.</span>
         </div>
-    </section>
+    </section> --}}
 </x-app-layout>

@@ -35,7 +35,11 @@ class AddToCart extends Component
         if (!$this->userId) {
             return redirect()->route('login');
         }
-
+        $count=Product::where('id',$productId)->pluck('stock')->first();
+        if($count<1){
+            $this->dispatch('notification', ['type' => 'error', 'message' => 'Failed! Product is out of stock']);
+            return;
+        }
         Cart::create([
             'user_id' => $this->userId,
             'product_id' => $productId,

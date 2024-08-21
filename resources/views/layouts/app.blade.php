@@ -64,6 +64,7 @@
 
     <x-footer class="bg-primary z-20" />
     <x-success-error/>
+    <livewire:notification/>
 
     <script src="{{ asset('scripts/index.js') }}"></script>
     

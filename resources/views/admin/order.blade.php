@@ -15,7 +15,7 @@
     <x-admin.side-bar />
     <main class="w-[83%] absolute right-0 top-0 p-5">
       <section>
-        <livewire:admin.customerOrder/>
+        <livewire:admin.customer-order/>
       </section>
     </main>
     <livewire:notification/>

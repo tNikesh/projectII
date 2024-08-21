@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CustomerOrder as ControllersCustomerOrder;
+use App\Http\Controllers\FaceController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -21,6 +22,8 @@ Route::get('/', [IndexController::class,'index'])->name('home');
 
 // soap page route
 Route::get('/soap',[SoapController::class,'view'])->name('soap');
+// soap page route
+Route::get('/face',[FaceController::class,'view'])->name('face');
 
 // single product page route
 Route::get('/product/{id}',[ProductController::class,'showSingleProduct'])->name('product');

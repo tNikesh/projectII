@@ -48,7 +48,7 @@
                             <td class="text-gray-700 p-2 capitalize ">Rs.{{ $order->grand_total }}/-</td>
                             <td class="text-gray-700 p-2 capitalize ">{{ $order->payment_status }}</td>
                             <td class="text-gray-700 p-2 capitalize ">{{ $order->delivery_status }}</td>
-                            <td class="text-gray-700 p-2 capitalize ">  {{ $order->created_at->format('d:m:y') }}</td>
+                            <td class="text-gray-700 p-2 capitalize ">  {{ $order->created_at->format('M d,Y') }}</td>
                         </tr>
                     @empty
                         <tr>

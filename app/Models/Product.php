@@ -29,4 +29,25 @@ class Product extends Model
     public function review(){
         return $this->hasMany(Review::class);
     }
+    public function updateStock()
+    {
+
+        $grandTotal = 0;
+        
+        if ($this->orderItem->count() > 0) {
+
+            $grandTotal = $this->orderItem->sum(function ($item) {
+
+                $basePrice = $item->base_price;
+                $discount = $item->discount;
+                $quantity = $item->quantity;
+
+                $discountedPrice = $basePrice - ($basePrice * ($discount / 100));
+
+                return $discountedPrice * $quantity;
+            });
+            $grandTotal += config('delivery.delivery_price');
+        }
+        return $grandTotal;
+    }
 }

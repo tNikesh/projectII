@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Order extends Model
 {
@@ -31,8 +32,8 @@ class Order extends Model
 
             $grandTotal = $this->orderItem->sum(function ($item) {
 
-                $basePrice = $item->product->base_price;
-                $discount = $item->product->discount;
+                $basePrice = $item->base_price;
+                $discount = $item->discount;
                 $quantity = $item->quantity;
 
                 $discountedPrice = $basePrice - ($basePrice * ($discount / 100));
@@ -42,5 +43,40 @@ class Order extends Model
             $grandTotal += config('delivery.delivery_price');
         }
         return $grandTotal;
+    }
+     
+ 
+
+    protected static function boot()
+    {
+        parent::boot();
+
+  
+
+        // When an order is updated to "canceled"
+        static::updating(function ($order) {
+            if ($order->isDirty('delivery_status') && $order->delivery_status == 'cancelled') {
+                DB::transaction(function () use ($order) {
+                    foreach ($order->orderItem as $item) {
+                        $product = $item->product;
+                        $quantity = $item->quantity;
+
+                        // Increase stock back
+                        $product->increment('stock', $quantity);
+                    }
+                });
+            }
+            if ($order->isDirty('delivery_status') && $order->getOriginal('delivery_status') == 'cancelled' && $order->delivery_status != 'cancelled') {
+                DB::transaction(function () use ($order) {
+                    foreach ($order->orderItem as $item) {
+                        $product = $item->product;
+                        $quantity = $item->quantity;
+
+                        // Increase stock back
+                        $product->decrement('stock', $quantity);
+                    }
+                });
+            }
+        });
     }
 }

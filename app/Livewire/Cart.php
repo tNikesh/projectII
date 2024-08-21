@@ -18,14 +18,18 @@ class Cart extends Component
      $this->userId=Auth::id();      
     }
     public function updateCartStatus(){
-        // dd('hello');
         $this->render();
     }
     public function increment($cartId,$increment)
     {
         
-        $cart = \App\Models\Cart::findOrFail($cartId);
+        $cart = \App\Models\Cart::with('product:id,stock')->findOrFail($cartId);
         if($increment){
+            if ($cart->quantity >= $cart->product->stock) { 
+                    // Handle the out-of-stock case if needed
+                    $this->dispatch('notification', ['type' => 'error', 'message' => 'This product is out of stock!']);
+                return;
+            }
             if($cart->quantity<100){
                 $cart->quantity+=1;
             }

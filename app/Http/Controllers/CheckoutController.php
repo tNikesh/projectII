@@ -37,6 +37,7 @@ class CheckoutController extends Controller
     }
     public function store(Request $req)
     {
+       
         $req->validate([
             'email' => 'nullable|email',
             'number' => 'required|numeric',
@@ -48,13 +49,27 @@ class CheckoutController extends Controller
             'street' => 'required|string|min:2|max:100',
             'payment' => 'required|string|in:paid,unpaid',
         ]);
+        $user = Auth::user();
+        $error = false;
+        $product='';
+        $cartItems = $user->cart;
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('home')->with('error', 'Checkout Failed! Your cart is empty.');
+        }
+        // Check if each product in the cart has enough stock
+        foreach ($cartItems as $cartItem) {
+            if ($cartItem->product->stock < $cartItem->quantity) {
+                $error = true;
+                $product=$cartItem->product->name;
+                break;
+            }
+        }
+        if($error){
+            return redirect()->route('home')->with('error', 'Failed! Item (' . $product . ') does not have enough stock.');
+        }
         try {
-            DB::transaction(function () use ($req) {
-                $user = Auth::user();
-                $cartItems = $user->cart;
-                if ($cartItems->isEmpty()) {
-                    throw new \Exception('Checkout Failed! Your cart is empty.');
-                }
+            DB::transaction(function () use ($req, $cartItems) {
+
                 $order = Order::create([
                     'user_id' => Auth::id(),
                     'full_name' => $req->fname . ' ' . $req->lname,
@@ -70,11 +85,15 @@ class CheckoutController extends Controller
 
                 foreach ($cartItems as $cartItem) {
 
-                    OrderItem::create([
+                    $orderItem = OrderItem::create([
                         'order_id' => $order->id,
                         'product_id' => $cartItem->product_id,
                         'quantity' => $cartItem->quantity,
+                        'base_price' => $cartItem->product->base_price,
+                        'discount' => $cartItem->product->discount,
                     ]);
+                    // Decrease the stock directly
+                    $orderItem->product->decrement('stock', $orderItem->quantity);
                     $cartItem->delete();
                 }
                 // Update the grand_total column in the orders table
@@ -84,17 +103,17 @@ class CheckoutController extends Controller
             // Check payment status and redirect to payment gateway if necessary
             if ($req->input('payment') === 'paid') {
                 // Redirect to payment gateway page for further processing
-               // If everything went well, redirect to a success page or display a success message
-        return redirect()->route('home')->with('success', 'paymenet interation left !');
+                // If everything went well, redirect to a success page or display a success message
+                return redirect()->route('home')->with('success', 'paymenet interation left !');
             } else {
                 // Redirect to order success page or display a success message
-               // If everything went well, redirect to a success page or display a success message
-        return redirect()->route('home')->with('success', 'Your checkout process completed !');
+                // If everything went well, redirect to a success page or display a success message
+                return redirect()->route('home')->with('success', 'Your checkout process completed !');
             }
         } catch (\Exception $e) {
             // Handle the exception, e.g., log the error, send a notification, etc.
             Log::error($e->getMessage());
-            return redirect()->back()->with('error', 'An error occurred during checkout. Please try again.');
+            return redirect()->route('home')->with('error', 'An error occurred during checkout. Please try again.');
         }
         // If everything went well, redirect to a success page or display a success message
         // return redirect()->route('home')->with('success', 'Your checkout process completed !');

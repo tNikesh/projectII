@@ -26,7 +26,13 @@
                 <span
                     class="text-4xl text-red-500 font-bold tracking-wider">Rs.{{ $product->base_price - $product->base_price * ($product->discount / 100) }}</span>
             </div>
+            @if(($product->stock)>0)
             <livewire:add-to-cart :productId="$product->id" wire:key="single-product-{{ $product->id }}" />
+            @else
+            <button type="button" class="bg-black w-40 py-3 px-1 text-gray-50 text-xs tracking-wider font-bold uppercase opacity-90">
+                Out Of Stock
+            </button>   
+            @endif
         </form>
     </div>
     <div class="w-full px-10 flex flex-col items-end justify-center py-5">

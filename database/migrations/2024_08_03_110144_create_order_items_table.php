@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('product_id');
             $table->integer('quantity');
+            $table->decimal('base_price', 10, 2);
+            $table->decimal('discount', 5, 2)->nullable();
             $table->timestamps();
 
             // Foreign key constraints (optional but recommended)
