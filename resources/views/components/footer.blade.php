@@ -26,12 +26,11 @@
                     <a href="#" class="text-base font-normal tracking-widest text-gray-950">Refunds Policy</a>
                 </li>
                 <li>
-                    <a href="#" class="text-base font-normal tracking-widest text-gray-950">Track Order</a>
+                    <a href="{{ route('track.order') }}" class="text-base font-normal tracking-widest text-gray-950">Track Order</a>
                 </li>
             </ul>
         </div>
         <div class="flex flex-1 flex-col justify-center items-start gap-y-6 ">
-            <h1 class="text-xl font-normal tracking-widest text-gray-800 uppercase">SIGN UP AND BUY</h1>
             <p class="text-base font-normal tracking-widest text-gray-950">Get special offers, free giveaways,
                 and once-in-a-lifetime deals.</p>
             <form>

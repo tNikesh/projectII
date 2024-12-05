@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CustomerOrder as ControllersCustomerOrder;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EsewaController;
 use App\Http\Controllers\FaceController;
 use App\Http\Controllers\IndexController;
@@ -57,9 +58,7 @@ route::get('/track-order',[TrackOrder::class,'index'])->name('track.order')->mid
 // all admin route
 Route::prefix('admin/dashboard')->group(function () {
     //dash board
-    Route::get('/', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    Route::get('/', [DashboardController::class,'index'])->name('admin.dashboard');
 
     //view product add page
     route::get('/add-product', [ProductController::class,'index'])->name('add.product');
@@ -85,7 +84,8 @@ Route::prefix('admin/dashboard')->group(function () {
     // deleting the product category
     route::patch('/product-category', [AddCategoryController::class, 'update'])->name('update.category');
 
-
+     route::get('/review',[ReviewController::class,'view'])->name('view.review');
+     route::get('/review/{id}',[ReviewController::class,'destroy'])->name('delete.review');
     // customer order
     route::get('/order',[ControllersCustomerOrder::class,'index'])->name('customer.order');
 

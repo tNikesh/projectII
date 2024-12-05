@@ -1,5 +1,5 @@
 @props(['class'=>''])
-<Header id="header" {{ $attributes->merge(["class"=>"px-3 flex flex-col justify-start gap-2 items-center md:px-6 border-b border-gray-200 w-full h-32 md:h-52 bg-primary z-50  $class"]) }}>
+<Header id="header" {{ $attributes->merge(["class"=>"px-3 flex flex-col justify-start gap-0 items-center md:px-6 border-b border-gray-200 w-full h-32 md:h-40 bg-primary z-50  $class"]) }}>
     <!-- Nothing worth having comes easy. - Theodore Roosevelt -->
     <x-header.utilities class="z-30"/>
     <x-header.navbar class="z-30 "/>
@@ -52,10 +52,15 @@ hideNav.addEventListener('click',function(){
 
 //  hiding and display cart module
 const cart = document.getElementById('cart');
+const cartBtn = document.getElementById('cart-btn');
 const cartButton = document.getElementById('cart-button');
 const hideCart=document.getElementById('hide-cart');
 const body=document.body;
 cartButton.addEventListener('click',function(){
+    cart.classList.remove('translate-x-full');
+    body.classList.add('overflow-hidden');
+})
+cartBtn.addEventListener('click',function(){
     cart.classList.remove('translate-x-full');
     body.classList.add('overflow-hidden');
 })

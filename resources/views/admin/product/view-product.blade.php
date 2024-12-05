@@ -15,34 +15,37 @@
     <x-admin.side-bar />
     <main class="w-[87%] absolute right-0 top-0 p-16">
         <section>
-            <h1 class="w-full text-left font-medium text-lg my-7 ">ALL Product</h1>
-            <div class="w-full bg-gray-50 drop-shadow-lg py-10 px-7">
-              <table class="min-w-full  text-left  border-collapse border-spacing-2 border-2 border-gray-800 table-fixed divide-y-2 divide-gray-800">
-                <thead class="text-lg font-medium bg-gray-800 text-white">
-                  <tr class="divide-x divide-gray-500">  
-                    <td class="py-3 px-2">Image</td> 
-                    <td class="py-3 px-2">ID</td> 
-                    <td class="py-3 px-2">Name</td>
-                    <td class="py-3 px-2">Price</td>
-                    <td class="py-3 px-2">Discount</td>
-                    <td class="py-3 px-2">Stock</td>
-                    <td class="py-3 px-2">Description</td>
-                    <td class="py-3 px-2">Product Category</td>
-                    <td class="py-3 px-2">Action</td>
+          <div class="flex justify-between items-center">
+            <h1 class="w-full text-left font-medium text-lg my-7 ">Products</h1>
+            <a href="{{ route('add.product') }}" class="bg-gray-800 py-2 px-5 text-white text-sm whitespace-nowrap uppercase">add new product</a>
+          </div>
+          <div class="w-full bg-gray-50 drop-shadow-lg ">
+              <table class="min-w-full  text-left   table-fixed divide-y-2 divide-slate-200">
+                <thead class=" text-gray-700 bg-slate-50 ">
+                  <tr class="divide-x divide-slate-200">  
+                    <td class="py-1 px-2"></td> 
+                    <td class="py-1 px-2">ID</td> 
+                    <td class="py-1 px-2">Name</td>
+                    <td class="py-1 px-2">Price</td>
+                    <td class="py-1 px-2">Discount</td>
+                    <td class="py-1 px-2">Stock</td>
+                    <td class="py-1 px-2">Description</td>
+                    <td class="py-1 px-2">Category</td>
+                    <td class="py-1 px-2">Action</td>
                   </tr>
                 </thead>
-                <tbody class="text-base font-normal divide-y divide-gray-500">
+                <tbody class="text-base font-normal divide-y bg-white divide-slate-200">
                   @foreach ($products as $product )     
-                  <tr class="divide-x divide-gray-500 h-14 ">
-                    <td class="py-3 px-2 w-32"><img src="{{ asset('images/'.$product->image_1) }}" alt=""></td>
-                    <td class="py-3 px-2 w-auto">{{$product->id}}</td>
-                    <td class="py-3 px-2 w-32">{{$product->name}}</td>
-                    <td class="py-3 px-2 w-auto whitespace-nowrap">Rs. {{$product->base_price}} /-</td>
-                    <td class="py-3 px-2 w-auto whitespace-nowrap">Rs. {{$product->discount}} /-</td>
-                    <td class="py-3 px-2 w-auto">{{$product->stock}}</td>
-                    <td class="py-3 px-2 w-32"><div class="h-60 overflow-scroll w-full">
+                  <tr class="divide-x divide-slate-200  ">
+                    <td class="py-1 px-2 w-24"><img src="{{ asset('images/'.$product->image_1) }}" alt=""></td>
+                    <td class="py-1 px-2 w-auto">{{$product->id}}</td>
+                    <td class="py-1 px-2 w-32">{{$product->name}}</td>
+                    <td class="py-1 px-2 w-auto whitespace-nowrap">Rs. {{$product->base_price}} /-</td>
+                    <td class="py-1 px-2 w-auto whitespace-nowrap">Rs. {{$product->discount}} /-</td>
+                    <td class="py-1 px-2 w-auto">{{$product->stock}}</td>
+                    <td class="py-1 px-2 w-40"><div class="h-32 overflow-x-auto  w-full">
                       {{$product->desc}}</div></td>
-                    <td class="py-3 px-2 w-32">
+                    <td class="py-1 px-2 w-32">
                     @forelse ($product->category as $ctg )
                       
                     {{$ctg->title}},
@@ -50,7 +53,7 @@
                     
                     @endforelse
                   </td>
-                    <td class="py-3 px-2 w-32">
+                    <td class="py-1 px-2 w-32">
                       <a href="{{ route('edit.product',$product->id) }}" class="bg-gray-900 text-white px-4 py-1 text-sm ">edit</a>
                     </td>
                   </tr>

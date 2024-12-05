@@ -58,7 +58,7 @@
 
     <x-header.header class="fixed top-0 left-0" />
 
-    <main id="main1" class="flex flex-col justify-start items-center m-0 p-0  bg-primary mt-32 md:mt-52  ">
+    <main id="main1" class="flex flex-col justify-start items-center m-0 p-0  bg-primary mt-32 md:mt-40  ">
         {{ $slot }}
     </main>
 

@@ -7,9 +7,9 @@ use Exception;
 class ProductSimilarity
 {
     protected $products;
-    protected $discountWeight  = 1;
-    protected $priceWeight    = 1;
-    protected $categoryWeight = 1;
+    protected $discountWeight  = 0.3;
+    protected $priceWeight    = 0.5;
+    protected $categoryWeight = 0.2;
     protected $priceHighRange;
 
     public function __construct($products)
@@ -55,10 +55,9 @@ class ProductSimilarity
     {
         $similarities = $matrix['product_id_' . $productId] ?? null;
         $sortedProducts = [];
-        $threshold = 0.5; // Example threshold for similarity
+        $threshold = 0.6; // Example threshold for similarity
         $limit = 5; // Example limit for number of products
         arsort($similarities);
-
         foreach ($similarities as $productIdKey => $similarity) {
             if ($similarity < $threshold) {
                 continue; // Skip products below the threshold
@@ -83,8 +82,9 @@ class ProductSimilarity
     protected function calculateSimilarityScore($productA, $productB)
     {
         // Ensure categories are non-null and convert to string (or handle as needed)
-        $productACategories = $productA->category->pluck('id')->toArray(); // Assuming category_id is a single ID
-        $productBCategories = $productB->category->pluck('id')->toArray();
+        $productACategories = $productA->category()->pluck('title')->toArray(); // Assuming category_id is a single ID
+        $productBCategories = $productB->category()->pluck('title')->toArray();
+        
         // Handle potential null or missing discount values
         $productADiscount = $productA->discount ?? 0; // Default to 0 if discount is null
         $productBDiscount = $productB->discount ?? 0; // Default to 0 if discount is null

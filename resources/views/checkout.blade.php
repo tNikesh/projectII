@@ -105,13 +105,7 @@
       <h1 class="uppercase w-full text-center font-semibold text-4xl text-gray-900">Billing Details</h1>
       <form action="{{ route('checkout.store') }}" method="post" class="w-full flex justify-center items-center gap-y-3 flex-col p-4 ">
         @csrf
-        <div class="w-full ">
-          <x-forms.label for="email" content="Email" />
-          <x-forms.input name="email" type="email" value="{{ old('email') }}" autofocus />
-          @error('email')
-          <span class="text-red-500 text-sm">{{ $message }}</span>
-      @enderror
-        </div>
+      
         <div class="w-full ">
           <x-forms.label for="number" content="number" />
           <x-forms.input name="number" value="{{ old('number') }}" type="number" autofocus required/>
@@ -119,36 +113,11 @@
           <span class="text-red-500 text-sm">{{ $message }}</span>
       @enderror
         </div>
-        <div class="w-full flex justify-between items-start md:flex-row flex-col gap-3">
-          <div class="w-full">
-            <x-forms.label for="fname" content="First Name" />
-            <x-forms.input name="fname" value="{{ old('fname') }}" type="text" required/>
-            @error('fname')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-        @enderror
-          </div>
-          <div class="w-full">
-            <x-forms.label for="lname" content="Last Name" required />
-            <x-forms.input name="lname"  value="{{ old('lname') }}"  type="text" />
-            @error('lname')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-        @enderror
-          </div>
-        </div>
-        <div class="w-full">
-          <livewire:LocationSelector/>
-        </div>
+      
         <div class="w-full flex justify-between items-center flex-wrap" >
-          <x-forms.label for="city" content="city" />
-          <x-forms.input name="city"  value="{{ old('city') }}"  type="text" required />
-          @error('city')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-        @enderror
-        </div>
-        <div class="w-full flex justify-between items-center flex-wrap">
-          <x-forms.label for="street" content="street" />
-          <x-forms.input name="street"  value="{{ old('street') }}"  type="text" required />
-          @error('street')
+          <x-forms.label for="address" content="address" />
+          <x-forms.input name="address"  value="{{ old('address') }}"  type="text" required />
+          @error('address')
             <span class="text-red-500 text-sm">{{ $message }}</span>
         @enderror
         </div>
@@ -159,7 +128,7 @@
             <div
               class="w-full border-2 border-gray-300 p-2 flex items-center space-x-2 cursor-pointer transition duration-300 hover:border-blue-600 focus-within:border-blue-600">
               <label class="w-full inline-flex items-center cursor-pointer">
-                <input type="radio" name="payment" class="custom-radio" value="esewa" checked />
+                <input type="radio" name="payment" class="custom-radio" value="esewa"  />
                 <span class="ml-2 text-gray-700 capitalize">E-sewa</span>
               </label>
             </div>
@@ -167,7 +136,7 @@
               class="w-full border-2 border-gray-300 p-2 flex items-center space-x-2 cursor-pointer transition duration-300 hover:border-blue-600 focus-within:border-blue-600">
 
               <label class="w-full inline-flex items-center cursor-pointer">
-                <input type="radio" name="payment" class="custom-radio" value="cod"  />
+                <input type="radio" name="payment" class="custom-radio" value="cod" checked />
                 <span class="ml-2 text-gray-700 capitalize">cash on delivery</span>
               </label>
             </div>

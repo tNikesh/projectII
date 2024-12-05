@@ -3,16 +3,15 @@
         class="bg-white flex items-center justify-center w-full md:justify-evenly gap-x-5 md:gap-x-20 gap-y-10 md:gap-y-14 flex-wrap md:px-14 py-5">
         <div class="w-full  drop-shadow-sm  space-y-4">
             <div class="flex justify-start items-center gap-3"><x-icons.trackOrder />
-                <h2 class="text-xl font-semibold tracking-wider">Track Your Order</h2>
+                <h2 class="text-lg font-semibold tracking-wider">Track Your Order</h2>
             </div>
             <div class="w-full overflow-x-auto">
-                <table class="w-full table-auto drop-shadow-lg text-center bg-primary">
-                    <thead class="w-full border-b border-gray-300">
+                <table class="w-full table-auto drop-shadow-sm text-center">
+                    <thead class="w-full border-b border-gray-300 bg-primary bg-opacity-90">
                         <tr>
                             <th class="p-1">Id</th>
                             <th class="p-1">Name</th>
                             <th class="p-1">Number</th>
-                            <th class="p-1">Email</th>
                             <th class="p-1">Address</th>
                             <th class="p-1">Product</th>
                             <th class="p-1">Total</th>
@@ -21,16 +20,15 @@
                             <th class="p-1">Date</th>
                         </tr>
                     </thead>
-                    <tbody class="w-full divide-x divide-gray-500 text-gray-800 capitalize">
+                    <tbody class="w-full divide-x divide-gray-500 text-gray-800 capitalize bg-slate-50">
                     @forelse ($orders as $order)
                         <tr class="">
                             <td class=" p-1 ">#{{ $order->id }}</td>
                             <td class=" p-1 ">{{ $order->full_name }}</td>
                             <td class=" p-1 ">{{ $order->number }}</td>
-                            <td class=" p-1 ">{{ $order->email }}</td>
                             <td class=" p-1  ">
-                          <div class="w-36">
-                            {{ $order->province }}, {{ $order->district }}, {{ $order->city }}
+                          <div class="w-32">
+                            {{ $order->city }}
                           </div>
                             
                                 </td>

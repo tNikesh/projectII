@@ -126,7 +126,7 @@ class ProductController extends Controller
             if ($product->image_4) {
                 $images[] = $product->image_4;
             }
-            $products = Product::all();
+            $products = Product::with('category')->get();
 
             $productSimilarity = new ProductSimilarity($products);
             $similarityMatrix = $productSimilarity->calculateSimilarityMatrix();

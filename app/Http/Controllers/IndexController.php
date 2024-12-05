@@ -13,7 +13,9 @@ class IndexController extends Controller
 
         $crousels=Product::latest()->take(3)->get();
         $review=Review::with(['user:id,name'])->orderBy('ratings','desc')->latest()->first();
-        $products = Product::with(['review:id,ratings,product_id'])->withAvg('review as avg_rating','ratings')->orderBy('avg_rating','desc')->latest()->take(5)->get();
+        $products = Product::with(['review:id,ratings,product_id'])->withAvg('review as avg_rating','ratings')
+        ->having('avg_rating', '>=', 1)
+        ->orderBy('avg_rating','desc')->latest()->take(5)->get();
         return view('index',compact('crousels','products','review'));
     }
 }

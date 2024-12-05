@@ -15,23 +15,25 @@
   <x-admin.side-bar/>
   <main class="w-[87%] absolute right-0 top-0 p-5">
    <section>
-    <h1 class="w-full text-left font-medium text-lg my-7 ">Product Category</h1>
-    <div class="w-full bg-gray-50 drop-shadow-lg py-10 px-7">
-      <x-forms.button id="product-category" content="new product category" class="w-56 mb-14 bg-white text-gray-900 ring-1 ring-black hover:bg-gray-800 hover:text-white"/>
-      <table class="min-w-full  text-left  border-collapse border-spacing-2 border-2 border-gray-800 table-auto divide-y-2 divide-gray-800">
-        <thead class="text-lg font-medium bg-gray-800 text-white">
-          <tr class="divide-x divide-gray-500">  
-            <td class="py-3 px-2">PID</td>
-            <td class="py-3 px-2">Category Name</td>
-            <td class="py-3 px-2">Action</td>
+    <div class="flex justify-between items-center my-7">
+    <h1 class="w-full text-left font-medium text-lg  ">Product Category</h1>
+    <x-forms.button id="product-category" content="new product category" class="w-56 mb-14 bg-white text-gray-900 ring-1 ring-black hover:bg-gray-800 hover:!text-black"/>
+   </div>
+    <div class="w-full ">
+      <table class="min-w-full w-full drop-shadow-sm  text-left   table-auto divide-y-1 divide-slate-200">
+        <thead class=" bg-slate-50 text-gray-800">
+          <tr class="divide-x divide-slate-200">  
+            <td class="py-1 px-2">PID</td>
+            <td class="py-1 px-2">Category Name</td>
+            <td class="py-1 px-2">Action</td>
           </tr>
         </thead>
-        <tbody class="text-base font-normal divide-y divide-gray-500">
+        <tbody class="text-base font-normal divide-y bg-white divide-slate-200">
           @foreach ($categories as $category )     
-          <tr class="divide-x divide-gray-500">
-            <td class="py-3 px-2">{{$category->id}}</td>
-            <td class="py-3 px-2">{{$category->title}}</td>
-            <td class="py-3 px-2">
+          <tr class="divide-x divide-slate-200">
+            <td class="py-1 px-2">{{$category->id}}</td>
+            <td class="py-1 px-2">{{$category->title}}</td>
+            <td class="py-1 px-2">
                <x-forms.button content="edit" type="button" class="edit-btn" data-id="{{ $category->id }}" data-title="{{ $category->title }}"/>
               {{-- <form action="{{ route('delete.product.category') }}" method="POST">
                 @csrf
@@ -60,7 +62,7 @@
       </div>
 
      <div class="flex justify-center items-center gap-x-2 w-full">
-      <x-forms.button type="button" id="cancel" content="cancel" class="w-full py-3 bg-white ring-1 ring-gray-800 text-gray-800 hover:text-white hover:bg-gray-800"/>
+      <x-forms.button type="button" id="cancel" content="cancel" class="w-full py-3 bg-white ring-1 ring-gray-800 text-gray-800 hover:text-white hover:!bg-gray-800"/>
       <x-forms.button type="submit" content="create new category" class="w-full py-3 ring-1 ring-gray-800 hover:text-gray-800 hover:bg-white"/>
      </div>
     </form>
@@ -78,7 +80,7 @@
       </div>
 
      <div class="flex justify-center items-center gap-x-2 w-full">
-      <x-forms.button type="button" id="cancelEdit" content="cancel" class="w-full py-3 bg-white ring-1 ring-gray-800 text-gray-800 hover:text-white hover:bg-gray-800"/>
+      <x-forms.button type="button" id="cancelEdit" content="cancel" class="w-full py-3 bg-white ring-1 ring-gray-800 text-gray-800 hover:text-white hover:!bg-gray-800"/>
       <x-forms.button type="submit" content="Update category" class="w-full py-3 ring-1 ring-gray-800 hover:text-gray-800 hover:bg-white"/>
      </div>
     </form>
