@@ -13,7 +13,7 @@
 
 <body class="bg-white w-screen h-screen p-0 m-0 overflow-x-hidden">
     <x-admin.side-bar />
-    <main class="w-[83%] absolute right-0 top-0 p-16">
+    <main class="w-[87%] absolute right-0 top-0 p-16">
         <section>
             <div class="flex justify-start items-center w-full gap-x-1 pb-6 relative">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000">
@@ -30,7 +30,7 @@
                         <h2 class="font-medium text-base">General information</h2>
                         <div class="w-full">
                             <x-forms.label for="name" content="Product Name" />
-                            <x-forms.input name="name" placeholder="Enter Product Name" class="bg-zinc-200 text-base "
+                            <x-forms.input name="name" placeholder="Enter Product Name" value="{{ old('name') }}" class="bg-zinc-200 text-base "
                                 autofocus />
                                 @error('name')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -38,7 +38,7 @@
                         </div>
                         <div class="w-full">
                             <x-forms.label for="desc" content="Product Description" />
-                            <x-forms.text-area name="desc" placeholder="Enter Product Description" cols="7" rows="4"
+                            <x-forms.text-area name="desc" placeholder="Enter Product Description" value="{{ old('desc') }}" cols="7" rows="4"
                                 class="bg-zinc-200 text-base" />
                                 @error('desc')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -46,16 +46,22 @@
                         </div>
                     </div>
                     {{-- image section --}}
-                    <div class="w-2/5 h-fit min-h-[380px] py-4 bg-zinc-100 drop-shadow-md ">
+                    <div class="w-2/5 h-fit min-h-[200px] py-4 bg-zinc-100 drop-shadow-md ">
                         <h2 class="font-medium text-base pb-4 text-center">Upload Max. 4 Images</h2>
-                        @livewire('image-upload') 
+                        <input type="file" name="images[]" id="file-input" value="{{ old('images') }}"  accept="image/*"  multiple />
+                        @error('images.*')              
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                      @enderror
+                        @error('images')              
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                      @enderror
                     </div>
                     {{-- pricing section --}}
                     <div class="w-1/2 bg-zinc-100 flex flex-col justify-center items-center  gap-5 py-10 px-9 drop-shadow-md">
                         <h2 class="font-medium text-base">Pricing And Stock</h2>
                         <div class="w-full">
                             <x-forms.label for="base_price" content="Base Pricing" />
-                            <x-forms.input name="base_price" placeholder="Enter Base Price" class="bg-zinc-200 text-base "
+                            <x-forms.input name="base_price" value="{{ old('base_price') }}" placeholder="Enter Base Price" class="bg-zinc-200 text-base "
                                 autofocus />
                                 @error('base_price')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -63,15 +69,15 @@
                         </div>
                         <div class="w-full flex justify-center items-center gap-x-6">
                             <div class="w-full">
-                                <x-forms.label for="stock" content="stock" />
-                                <x-forms.input name="stock" placeholder="22" class="bg-zinc-200 text-base " />
+                                <x-forms.label for="stock" content="stock"  />
+                                <x-forms.input name="stock" placeholder="22" value="{{ old('stock') }}" class="bg-zinc-200 text-base " />
                                 @error('stock')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                             </div>
                             <div class="w-full">
                                 <x-forms.label for="discount" content="Dicount%" />
-                                <x-forms.input name="discount" placeholder="10%" class="bg-zinc-200 text-base " />
+                                <x-forms.input name="discount" value="{{ old('discount') }}" placeholder="10%" class="bg-zinc-200 text-base " />
                                 @error('discount')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
@@ -84,8 +90,17 @@
                         <h2 class="font-medium text-base">Category</h2>
                         <div class="w-full flex flex-col justify-center items-center gap-y-1 ">
                             <x-forms.label for="category" content="Product Category" />
-                            <x-forms.select name="category" placeholder="select product category" :options="$productCategories"/>
+                            <select name="category[]"  class="w-full border border-black text-left h-10 pl-2 " multiple>
+                                <option value="">select category</option>
+                                @forelse ($productCategories as $category )     
+                                <option value="{{ $category->id }}"  {{ old('category')==$category->id?'selected':'' }} >{{ $category->title }}</option>    
+                                @empty                                    
+                                @endforelse
+                            </select>
                             @error('category')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
+                            @error('category.*')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
                         </div>

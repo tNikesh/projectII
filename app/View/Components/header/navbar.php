@@ -2,6 +2,7 @@
 
 namespace App\View\Components\header;
 
+use App\Models\Category;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -13,7 +14,6 @@ class navbar extends Component
      */
     public function __construct()
     {
-        //
     }
 
     /**
@@ -21,6 +21,7 @@ class navbar extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.header.navbar');
+       $categories=Category::select('id','title')->get();  
+        return view('components.header.navbar',compact('categories'));
     }
 }

@@ -16,12 +16,12 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('full_name');
             $table->string('number');
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->string('province');
             $table->string('district');
             $table->string('city');
             $table->string('street');
-            $table->string('payment_status');
+            $table->string('payment_status')->default('cod');
             $table->string('delivery_status')->default('pending');
             $table->decimal('grand_total', 10, 2);
             $table->timestamps();

@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CustomerOrder as ControllersCustomerOrder;
+use App\Http\Controllers\EsewaController;
 use App\Http\Controllers\FaceController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ProductController;
@@ -20,10 +21,9 @@ use PharIo\Manifest\AuthorCollection;
 
 Route::get('/', [IndexController::class,'index'])->name('home');
 
-// soap page route
-Route::get('/soap',[SoapController::class,'view'])->name('soap');
-// soap page route
-Route::get('/face',[FaceController::class,'view'])->name('face');
+//  products category route
+Route::get('/category/{id}',[ProductController::class, 'show'])->name('category.show');
+
 
 // single product page route
 Route::get('/product/{id}',[ProductController::class,'showSingleProduct'])->name('product');
@@ -67,10 +67,15 @@ Route::prefix('admin/dashboard')->group(function () {
     // add product route
     route::POST('/add-product', [ProductController::class,'create'])->name('post.add.product');
 
+    // edit product
+    route::get('/add-product/{id}', [ProductController::class,'edit'])->name('edit.product');
+    // update product
+    route::patch('/add-product/{id}', [ProductController::class,'update'])->name('update.product');
+
+
     // view all product route
     route::get('/all-product', [ProductController::class,'view'])->name('view.product');
     // view all product route
-    route::Delete('/all-product', [ProductController::class,'destroy'])->name('destroy.product');
     // product catgeory route
     route::get('/product-category', [AddCategoryController::class, 'viewProductCategory'])->name('product.category');
 
@@ -78,7 +83,7 @@ Route::prefix('admin/dashboard')->group(function () {
     route::POST('/product-category', [AddCategoryController::class, 'createProductCategory'])->name('post.product.category');
 
     // deleting the product category
-    route::Delete('/product-category', [AddCategoryController::class, 'deleteProductCategory'])->name('delete.product.category');
+    route::patch('/product-category', [AddCategoryController::class, 'update'])->name('update.category');
 
 
     // customer order
@@ -102,5 +107,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+route::get('/success',[EsewaController::class,'success'])->name('esewa.success');
+route::get('/failure',[EsewaController::class,'failure'])->name('esewa.failure');
 
 require __DIR__.'/auth.php';

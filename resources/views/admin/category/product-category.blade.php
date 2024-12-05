@@ -13,7 +13,7 @@
 
 <body class="bg-white w-screen h-screen p-0 m-0 overflow-x-hidden">
   <x-admin.side-bar/>
-  <main class="w-[83%] absolute right-0 top-0 p-5">
+  <main class="w-[87%] absolute right-0 top-0 p-5">
    <section>
     <h1 class="w-full text-left font-medium text-lg my-7 ">Product Category</h1>
     <div class="w-full bg-gray-50 drop-shadow-lg py-10 px-7">
@@ -23,7 +23,6 @@
           <tr class="divide-x divide-gray-500">  
             <td class="py-3 px-2">PID</td>
             <td class="py-3 px-2">Category Name</td>
-            <td class="py-3 px-2">Category Description</td>
             <td class="py-3 px-2">Action</td>
           </tr>
         </thead>
@@ -32,14 +31,14 @@
           <tr class="divide-x divide-gray-500">
             <td class="py-3 px-2">{{$category->id}}</td>
             <td class="py-3 px-2">{{$category->title}}</td>
-            <td class="py-3 px-2">{{$category->desc}}</td>
             <td class="py-3 px-2">
-              <form action="{{ route('delete.product.category') }}" method="POST">
+               <x-forms.button content="edit" type="button" class="edit-btn" data-id="{{ $category->id }}" data-title="{{ $category->title }}"/>
+              {{-- <form action="{{ route('delete.product.category') }}" method="POST">
                 @csrf
                 @method('Delete')
                 <input type="text" value="{{ $category->id }}" name="deleteId" hidden>
                 <x-forms.button content="delete" type="submit"/>
-              </form>
+              </form> --}}
             </td>
           </tr>
           @endforeach
@@ -59,13 +58,28 @@
         <x-forms.label for="title" content="Product title" class=""/>
         <x-forms.input name="title" placeholder="Enter Product title" class="w-full text-gray-700 bg-white" autofocus/>
       </div>
-      <div class="flex flex-col justify-center items-start w-full">
-        <x-forms.label for="desc" content="Product Description"/>
-        <x-forms.input name="desc" placeholder="Enter Product description" class="w-full text-gray-700 bg-white"/>
-      </div>
+
      <div class="flex justify-center items-center gap-x-2 w-full">
       <x-forms.button type="button" id="cancel" content="cancel" class="w-full py-3 bg-white ring-1 ring-gray-800 text-gray-800 hover:text-white hover:bg-gray-800"/>
       <x-forms.button type="submit" content="create new category" class="w-full py-3 ring-1 ring-gray-800 hover:text-gray-800 hover:bg-white"/>
+     </div>
+    </form>
+   </section>
+   <section id="edit-modal" class="z-50 absolute top-0 left-1/2 -translate-x-1/2 -translate-y-full w-full max-w-[550px] py-8 px-5 bg-white border-2 border-black flex flex-col justify-center items-center gap-y-10 drop-shadow-xl transform transition-all duration-300 ease-in-out"  >
+    <h1 class="w-full text-left uppercase text-lg font-semibold ">Edit product category</h1>
+    {{-- form --}}
+    <form class="flex flex-col justify-center items-center w-full gap-y-7 px-7"  action="{{ route('update.category') }}" method="POST">
+      @csrf
+      @method('PATCH')
+      <input type="text" name="id" id="id" hidden>
+      <div class="flex flex-col justify-center items-start  w-full ">
+        <x-forms.label for="editTitle" content="Product title" class=""/>
+        <x-forms.input name="editTitle" id="title"  placeholder="Enter Product title" class="w-full text-gray-700 bg-white" autofocus/>
+      </div>
+
+     <div class="flex justify-center items-center gap-x-2 w-full">
+      <x-forms.button type="button" id="cancelEdit" content="cancel" class="w-full py-3 bg-white ring-1 ring-gray-800 text-gray-800 hover:text-white hover:bg-gray-800"/>
+      <x-forms.button type="submit" content="Update category" class="w-full py-3 ring-1 ring-gray-800 hover:text-gray-800 hover:bg-white"/>
      </div>
     </form>
    </section>
@@ -86,6 +100,26 @@
           hiddenModal.classList.remove('top-1/4');
           hiddenModal.classList.add('-translate-y-full');
         })
+    })
+
+    const editBtn=document.querySelectorAll('.edit-btn');
+    const cancelbtn=document.getElementById('cancelEdit');
+    const editModal=document.getElementById('edit-modal');
+    const inputId=document.getElementById('id');
+    const inputTitle=document.getElementById('title');
+    editBtn.forEach(btn=>{
+      btn.addEventListener('click',function(){  
+        const id=btn.dataset.id;
+        const title=btn.dataset.title;
+        inputId.value=id;
+        inputTitle.value=title;
+        editModal.classList.add('top-1/4');
+        editModal.classList.remove('-translate-y-full');
+      });
+    });
+    cancelbtn.addEventListener('click',function(){
+      editModal.classList.remove('top-1/4');
+      editModal.classList.add('-translate-y-full');
     })
 
   </script>

@@ -3,7 +3,7 @@
     <!-- Nothing worth having comes easy. - Theodore Roosevelt -->
     <x-header.utilities class="z-30"/>
     <x-header.navbar class="z-30 "/>
-    <x-header.search-field class="z-40"/>
+    {{-- <x-header.search-field class="z-40"/> --}}
     <x-header.cart class="z-40"/>
 
 </Header>
@@ -14,24 +14,24 @@
     
 document.addEventListener('DOMContentLoaded', function () {
 // for displaying and hiding the seacrh field
-const search2 = document.getElementById('show-search-2');
-const search1 = document.getElementById('show-search-1');
-const searchField = document.getElementById('search-field');
-const hideSearch = document.getElementById('hide-search');
+// const search2 = document.getElementById('show-search-2');
+// const search1 = document.getElementById('show-search-1');
+// const searchField = document.getElementById('search-field');
+// const hideSearch = document.getElementById('hide-search');
 
-search2.addEventListener('click',showSearch);
-search1.addEventListener('click',showSearch);
+// search2.addEventListener('click',showSearch);
+// search1.addEventListener('click',showSearch);
 
- function showSearch() {
-        // display search field
-        searchField.classList.remove('-translate-y-full');     
-    }
-hideSearch.addEventListener('click', function () {
-    console.log("clicked");
-    // hide seeach field
-    searchField.classList.add('-translate-y-full');
+//  function showSearch() {
+//         // display search field
+//         searchField.classList.remove('-translate-y-full');     
+//     }
+// hideSearch.addEventListener('click', function () {
+//     console.log("clicked");
+//     // hide seeach field
+//     searchField.classList.add('-translate-y-full');
 
-});
+// });
 
 //  hiding and display cart module
 const menu = document.getElementById('menu-bar');

@@ -75,8 +75,8 @@
               </div>
               <span class="uppercase font-normal text-base tracking-wider">{{ $cart->product->name }}</span>
             </div>
-            <span class="tracking-wider font-normal text-base">
-              Rs. {{ $cart->product->base_price-($cart->product->base_price*$cart->product->discount/100) }}
+            <span class="tracking-wider whitespace-nowrap font-normal text-base">
+              Rs. {{$cart->quantity* ($cart->product->base_price-($cart->product->base_price*$cart->product->discount/100) )}}
             </span>
           </div>
 
@@ -107,14 +107,14 @@
         @csrf
         <div class="w-full ">
           <x-forms.label for="email" content="Email" />
-          <x-forms.input name="email" type="email" autofocus />
+          <x-forms.input name="email" type="email" value="{{ old('email') }}" autofocus />
           @error('email')
           <span class="text-red-500 text-sm">{{ $message }}</span>
       @enderror
         </div>
         <div class="w-full ">
           <x-forms.label for="number" content="number" />
-          <x-forms.input name="number" type="number" autofocus />
+          <x-forms.input name="number" value="{{ old('number') }}" type="number" autofocus required/>
           @error('number')
           <span class="text-red-500 text-sm">{{ $message }}</span>
       @enderror
@@ -122,14 +122,14 @@
         <div class="w-full flex justify-between items-start md:flex-row flex-col gap-3">
           <div class="w-full">
             <x-forms.label for="fname" content="First Name" />
-            <x-forms.input name="fname" type="text" required/>
+            <x-forms.input name="fname" value="{{ old('fname') }}" type="text" required/>
             @error('fname')
             <span class="text-red-500 text-sm">{{ $message }}</span>
         @enderror
           </div>
           <div class="w-full">
-            <x-forms.label for="lname" content="Last Name" />
-            <x-forms.input name="lname" type="text" />
+            <x-forms.label for="lname" content="Last Name" required />
+            <x-forms.input name="lname"  value="{{ old('lname') }}"  type="text" />
             @error('lname')
             <span class="text-red-500 text-sm">{{ $message }}</span>
         @enderror
@@ -138,16 +138,16 @@
         <div class="w-full">
           <livewire:LocationSelector/>
         </div>
-        <div class="w-full flex justify-between items-center flex-wrap">
+        <div class="w-full flex justify-between items-center flex-wrap" >
           <x-forms.label for="city" content="city" />
-          <x-forms.input name="city" type="text" />
+          <x-forms.input name="city"  value="{{ old('city') }}"  type="text" required />
           @error('city')
             <span class="text-red-500 text-sm">{{ $message }}</span>
         @enderror
         </div>
         <div class="w-full flex justify-between items-center flex-wrap">
           <x-forms.label for="street" content="street" />
-          <x-forms.input name="street" type="text" />
+          <x-forms.input name="street"  value="{{ old('street') }}"  type="text" required />
           @error('street')
             <span class="text-red-500 text-sm">{{ $message }}</span>
         @enderror
@@ -158,16 +158,16 @@
           <div class="flex flex-col w-full items-center justify-center gap-y-5">
             <div
               class="w-full border-2 border-gray-300 p-2 flex items-center space-x-2 cursor-pointer transition duration-300 hover:border-blue-600 focus-within:border-blue-600">
-              <label class="w-full inline-flex items-center">
-                <input type="radio" name="payment" class="custom-radio" value="paid" checked />
-                <span class="ml-2 text-gray-700 capitalize">Pay now</span>
+              <label class="w-full inline-flex items-center cursor-pointer">
+                <input type="radio" name="payment" class="custom-radio" value="esewa" checked />
+                <span class="ml-2 text-gray-700 capitalize">E-sewa</span>
               </label>
             </div>
             <div
               class="w-full border-2 border-gray-300 p-2 flex items-center space-x-2 cursor-pointer transition duration-300 hover:border-blue-600 focus-within:border-blue-600">
 
-              <label class="w-full inline-flex items-center">
-                <input type="radio" name="payment" class="custom-radio" value="unpaid" />
+              <label class="w-full inline-flex items-center cursor-pointer">
+                <input type="radio" name="payment" class="custom-radio" value="cod"  />
                 <span class="ml-2 text-gray-700 capitalize">cash on delivery</span>
               </label>
             </div>

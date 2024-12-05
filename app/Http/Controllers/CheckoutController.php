@@ -5,13 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Services\EsewaServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+require '../vendor/autoload.php';
+
+use RemoteMerge\Esewa\Client;
+
 class CheckoutController extends Controller
 {
+
     public function index()
     {
         $delivery = config('delivery.delivery_price');
@@ -19,6 +25,20 @@ class CheckoutController extends Controller
         $carts = Cart::with('product')->where('user_id', $user->id)->get();
         if ($carts->isEmpty()) {
             return redirect()->back()->with('error', 'Your cart is empty.');
+        }
+        foreach ($carts as $cart) {
+            // Get the product related to the cart item
+            $product = $cart->product;
+    
+            // Check if the cart item's quantity is greater than the product's stock
+            if ($cart->quantity > $product->stock) {
+                // Handle the out-of-stock case for the specific item
+                return redirect()->back()->with('error', "The product {$product->name} is out of stock or you have exceeded the available quantity.");
+            }
+            if($cart->quantity>5 || $cart->quantity<1){
+                return redirect()->back()->with('error', "The product {$product->name} is more than 5 or less than 0");
+
+            }
         }
         $subTotal = $carts->sum(function ($cart) {
             $price = $cart->product->base_price;
@@ -37,7 +57,7 @@ class CheckoutController extends Controller
     }
     public function store(Request $req)
     {
-       
+
         $req->validate([
             'email' => 'nullable|email',
             'number' => 'required|numeric',
@@ -47,11 +67,11 @@ class CheckoutController extends Controller
             'district' => 'required|string|min:2|max:50',
             'city' => 'required|string|min:2|max:50',
             'street' => 'required|string|min:2|max:100',
-            'payment' => 'required|string|in:paid,unpaid',
+            'payment' => 'required|string|in:esewa,cod',
         ]);
         $user = Auth::user();
         $error = false;
-        $product='';
+        $product = '';
         $cartItems = $user->cart;
         if ($cartItems->isEmpty()) {
             return redirect()->route('home')->with('error', 'Checkout Failed! Your cart is empty.');
@@ -60,16 +80,15 @@ class CheckoutController extends Controller
         foreach ($cartItems as $cartItem) {
             if ($cartItem->product->stock < $cartItem->quantity) {
                 $error = true;
-                $product=$cartItem->product->name;
+                $product = $cartItem->product->name;
                 break;
             }
         }
-        if($error){
+        if ($error) {
             return redirect()->route('home')->with('error', 'Failed! Item (' . $product . ') does not have enough stock.');
         }
         try {
-            DB::transaction(function () use ($req, $cartItems) {
-
+           DB::beginTransaction();
                 $order = Order::create([
                     'user_id' => Auth::id(),
                     'full_name' => $req->fname . ' ' . $req->lname,
@@ -79,7 +98,7 @@ class CheckoutController extends Controller
                     'district' => $req->district,
                     'city' => $req->city,
                     'street' => $req->street,
-                    'payment_status' => 'unpaid',
+                    'payment_status' => 'cod',
                     'grand_total' => 0,
                 ]);
 
@@ -99,23 +118,35 @@ class CheckoutController extends Controller
                 // Update the grand_total column in the orders table
                 $order->grand_total = $order->grandTotal();
                 $order->save();
-            });
-            // Check payment status and redirect to payment gateway if necessary
-            if ($req->input('payment') === 'paid') {
-                // Redirect to payment gateway page for further processing
-                // If everything went well, redirect to a success page or display a success message
-                return redirect()->route('home')->with('success', 'paymenet interation left !');
-            } else {
-                // Redirect to order success page or display a success message
-                // If everything went well, redirect to a success page or display a success message
-                return redirect()->route('home')->with('success', 'Your checkout process completed !');
-            }
+                DB::commit();
+                // Check payment status and redirect to payment gateway if necessary
+                if ($req->payment =='esewa') {
+                    // Set success and failure callback URLs.
+                    $successUrl = url('/success');
+                    $failureUrl = url('/failure');
+
+                    // Initialize eSewa client for development.
+                    $esewa = new Client([
+                        'merchant_code' => 'EPAYTEST',
+                        'success_url' => $successUrl,
+                        'failure_url' => $failureUrl,
+                    ]);
+
+                    $esewa->payment($order->id, $order->grand_total, 0, 0, 0);
+                } else {
+                    // dd('hi');
+                    // If everything went well, redirect to a success page or display a success message
+                    DB::commit();
+                    return redirect()->route('track.order')->with('success', 'Your checkout process completed !');
+                }
         } catch (\Exception $e) {
+            DB::rollBack();
             // Handle the exception, e.g., log the error, send a notification, etc.
             Log::error($e->getMessage());
-            return redirect()->route('home')->with('error', 'An error occurred during checkout. Please try again.');
+            return redirect()->back()->with('error', 'An error occurred during checkout. Please try again.');
         }
-        // If everything went well, redirect to a success page or display a success message
-        // return redirect()->route('home')->with('success', 'Your checkout process completed !');
+
     }
+
+
 }

@@ -11,7 +11,7 @@ class TrackOrder extends Controller
 {
     public function index(){
         $userId = Auth::id();
-        $orders = Order::where('user_id', $userId)->latest()->paginate(1);
+        $orders = Order::where('user_id', $userId)->latest()->paginate(3);
         return view('track-order',compact('orders'));
     }
 }

@@ -12,12 +12,11 @@ class CustomerOrder extends Component
 
     public $status = "all";
     public $perPage = '5';
-    public $search = '';
 
 
     public function updated($peroperties)
     {
-        if (in_array($peroperties, ['perPage', 'search', 'status'])) {
+        if (in_array($peroperties, ['perPage',  'status'])) {
             $this->resetPage();
         }
     }
@@ -48,11 +47,6 @@ class CustomerOrder extends Component
             ->where(function ($query) {
                 if ($this->status !== 'all') {
                     $query->where('delivery_status', $this->status);
-                }
-                if ($this->search) {
-                    $query->where('full_name', 'like', '%' . $this->search . '%');
-                    $query->where('number', 'like', '%' . $this->search . '%');
-                    $query->orWhere('id', $this->search);
                 }
             })
             ->latest()

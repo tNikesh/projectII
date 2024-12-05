@@ -20,6 +20,27 @@
             <input type="text" hidden name="pid" value="{{ $product->id }}">
             <span
                 class="font-extrabold md:text-5xl text-black text-center md:text-left uppercase text-4xl">{{ $product->name }}</span>
+                <div class="flex justify-start items-center gap-x-2 font-medium capitalize"><span class="whitespace-nowrap">Category :</span>
+                <span class="flex justify-start items-center gap-1 text-sm">
+                    @forelse ($product->category as $ctg )
+                        
+                    <span>{{ $ctg->title }}</span>    
+                    @empty
+                        
+                    @endforelse
+                </span></div>
+               <div class="flex justify-center items-center">
+                @if ($product->avg_rating!=0)
+                @for ($i = 1; $i <= 5; $i++)
+                    @if ($i <= $product->avg_rating)
+                        <x-filled_star />
+                    @else
+                        <x-fillable_star />
+                    @endif
+                @endfor
+                @endif
+
+               </div>
             <div class="flex items-center justify-center gap-x-4 w-full md:justify-start md:gap-x-7 flex-wrap gap-y-3">
                 <span
                     class="text-3xl line-through text-gray-800 font-semibold tracking-wider">Rs.{{ $product->base_price }}</span>
@@ -33,6 +54,9 @@
                 Out Of Stock
             </button>   
             @endif
+            <div>
+                {{ $product->desc??'' }}
+            </div>
         </form>
     </div>
     <div class="w-full px-10 flex flex-col items-end justify-center py-5">
@@ -76,6 +100,35 @@
                     <div class="pt-2">{{ $r->reviews }}</div>
                 </div>
             @endforeach
+        </div>
+    </div>
+    <div>
+        <h3 class="text-black text-lg font-medium w-full text-center pb-5 capitalize">Recommended products</h3>
+        <div class="w-full flex justify-start items-center gap-10 px-10">
+            @forelse ($similarProducts as $similar )
+        <div class="flex items-center justify-start flex-col gap-y-1 w-2/5 md:w-2/12">
+            <div class=" relative w-full flex items-center ">
+                <span
+                    class="absolute top-0 left-0 w-16 text-center py-1 bg-[#b18724] text-white font-medium text-base drop-shadow-md">-{{ intval($similar->discount) }}%</span>
+                <img src="{{ asset('images/' . $similar->image_1) }}" class="w-full h-auto aspect-auto "
+                    alt="">
+            </div>
+            <a href="{{ route('product',$similar->id) }}" 
+                class=" py-1 w-full text-sm px-5 text-center whitespace-nowrap bg-black text-white capitalize font-bold" >Buy Now</a>
+
+            <div class="flex justify-center items-center gap-x-4 flex-wrap">
+                <span
+                    class="font-medium text-gray-900 text-lg">Rs.{{ $similar->base_price - $similar->base_price * ($similar->discount / 100) }}</span>
+                <span class="font-normal text-gray-500 line-through text-base">Rs.{{ $similar->base_price }}</span>
+            </div>
+            <span class="text-lg uppercase font-bold text-center ">{{ $similar->name }}</span>
+            <div class="flex items-center justify-center gap-0 md:gap-1">
+            </div>
+        </div>
+
+        @empty
+            
+        @endforelse
         </div>
     </div>
 </x-app-layout>

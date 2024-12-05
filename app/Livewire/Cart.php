@@ -27,10 +27,10 @@ class Cart extends Component
         if($increment){
             if ($cart->quantity >= $cart->product->stock) { 
                     // Handle the out-of-stock case if needed
-                    $this->dispatch('notification', ['type' => 'error', 'message' => 'This product is out of stock!']);
+                    $this->dispatch('notification', ['type' => 'error', 'message' => 'The product quantity is out of stock!']);
                 return;
             }
-            if($cart->quantity<100){
+            if($cart->quantity<5){
                 $cart->quantity+=1;
             }
         }

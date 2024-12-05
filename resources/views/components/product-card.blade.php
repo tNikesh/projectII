@@ -9,10 +9,15 @@
     </div>
     <h1 class="text-xl w-full text-center font-medium  tracking-widest text-gray-700">{{$product->name }}</h1>
     <div class="flex justify-center items-center">
-        @for ($i =0 ; $i <5 ; $i++)
-        <x-rating/>
+        @if ($product->avg_rating!=0)
+        @for ($i = 1; $i <= 5; $i++)
+            @if ($i <= $product->avg_rating)
+                <x-filled_star />
+            @else
+                <x-fillable_star />
+            @endif
         @endfor
-        <span>(299)</span>
+        @endif
     </div>
     
     <div class="flex justify-center items-center flex-wrap gap-x-2 text-base font-normal">
