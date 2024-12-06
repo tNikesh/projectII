@@ -41,9 +41,9 @@ Route::POST('/checkout', [CheckoutController::class, 'store'])->name('checkout.s
 // create customer review
 route::post('/review/{id}',[ReviewController::class,'create'])->name('review')->middleware('auth');
 
-//login route
-route::get('/account/login',[AuthenticatedSessionController::class,'create'])->name('login');
-route::post('/account/login',[AuthenticatedSessionController::class,'store'])->name('login.store');
+// //login route
+// route::get('/account/login',[AuthenticatedSessionController::class,'create'])->name('login');
+// route::post('/account/login',[AuthenticatedSessionController::class,'store'])->name('login.store');
 
 // logout
 Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])

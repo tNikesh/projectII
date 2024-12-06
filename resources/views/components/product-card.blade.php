@@ -4,7 +4,7 @@
     <div class="relative w-full">
         <x-forms.button content="Sale" type="button" class="capitalize absolute top-0 right-0 w-12 font-medium tracking-widest "/>
  
-        <img src="{{ asset('images/'.$product->image_1) }}"  class="w-full h-auto aspect-auto " alt="">
+        <img src="{{ asset('images/'.$product->image_1) }}" loading="lazy"  class="w-full h-auto aspect-auto " alt="">
         <x-forms.button content="Quick View" type="button" class="capitalize absolute bottom-5 left-1/2 w-full tracking-widest -translate-x-1/2 hidden group-hover:block transition ease-in-out"/>
     </div>
     <h1 class="text-xl w-full text-center font-medium  tracking-widest text-gray-700">{{$product->name }}</h1>

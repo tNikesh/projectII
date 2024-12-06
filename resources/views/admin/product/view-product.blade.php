@@ -37,7 +37,7 @@
                 <tbody class="text-base font-normal divide-y bg-white divide-slate-200">
                   @foreach ($products as $product )     
                   <tr class="divide-x divide-slate-200  ">
-                    <td class="py-1 px-2 w-24"><img src="{{ asset('images/'.$product->image_1) }}" alt=""></td>
+                    <td class="py-1 px-2 w-24"><img src="{{ asset('images/'.$product->image_1) }}" loading="lazy" alt=""></td>
                     <td class="py-1 px-2 w-auto">{{$product->id}}</td>
                     <td class="py-1 px-2 w-32">{{$product->name}}</td>
                     <td class="py-1 px-2 w-auto whitespace-nowrap">Rs. {{$product->base_price}} /-</td>
@@ -60,9 +60,9 @@
                   @endforeach
                 </tbody>
               </table>
-              <div class="conatiner py-6">
-                {{ $products->links('vendor.pagination.tailwind') }}
-              </div>
+            </div>
+            <div class="conatiner py-6">
+              {{ $products->links('vendor.pagination.tailwind') }}
             </div>
            </section>
     </main>

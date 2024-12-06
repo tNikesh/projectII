@@ -82,7 +82,7 @@ class ProductController extends Controller
     //view all product
     public function view()
     {
-        $products = Product::with('category')->paginate(10);
+        $products = Product::with('category')->latest()->paginate(8);
         return view('admin.product.view-product', compact('products'));
     }
 
